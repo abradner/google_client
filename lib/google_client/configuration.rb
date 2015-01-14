@@ -16,6 +16,14 @@ module GoogleClient
     yield(configuration)
   end
 
+  def self.client
+    configuration.client
+  end
+
+  def self.authorization
+    configuration.authorization
+  end
+
   # def self.configuration
   #   @config || (fail MissingConfiguration.new)
   # end
@@ -42,24 +50,24 @@ module GoogleClient
       return @client if @client
       errors = []
 
-      symbols = %i(application_name application_version)
-      symbols.each do |sym|
-        errors << errors_for(sym)
-      end
-      errors << 'application_name not set' unless @application_name.present?
-      errors << 'application_version not set' unless @application_version.present?
+      # symbols = %i(app_name app_version)
+      # symbols.each do |sym|
+      #   errors << errors_for(sym)
+      # end
+      errors << 'app_name not set' unless @app_name.present?
+      errors << 'app_version not set' unless @app_version.present?
 
       fail "Couldn't create the client:\n" << errors.to_sentence unless errors.blank?
 
-      @client = Google::APIClient.new(application_name: @application_name,
-                                      application_version: @application_version)
+      @client = Google::APIClient.new(application_name: @app_name,
+                                      application_version: @app_version)
     end
 
     def authorization
       errors = []
 
-      errors << 'application_name not set' unless @application_name.present?
-      errors << 'application_version not set' unless @application_version.present?
+      errors << 'app_name not set' unless @app_name.present?
+      errors << 'app_version not set' unless @app_version.present?
 
       fail "Couldn't create the authorizationt:\n" << errors.to_sentence unless errors.blank?
       Google::APIClient::ClientSecrets.new(to_hash).to_authorization
@@ -78,8 +86,10 @@ module GoogleClient
 
   private
 
-    def errors_for(sym)
-      "#{sym} not set" unless send(sym).present?
-    end
+    # def errors_for(sym)
+    #   send(sym)
+    # rescue NoMethodError
+    #   "#{sym} not set"
+    # end
   end
 end

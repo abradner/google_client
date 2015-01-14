@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'google_client/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'google_client'
+  spec.name          = 'abstract_google_client'
   spec.version       = GoogleClient::VERSION
   spec.authors       = ['Alexander Bradner']
   spec.email         = ['alex@bradner.net']

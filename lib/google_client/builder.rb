@@ -22,8 +22,8 @@ module GoogleClient
     end
 
     def execute_batch(credential, batch)
-      # preflight(credential)
-      @auth.update_token!(credential)
+      preflight(credential)
+      # @auth.update_token!(credential)
       @client.execute(batch, authorization: @auth)
     end
 

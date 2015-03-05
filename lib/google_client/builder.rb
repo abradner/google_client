@@ -12,13 +12,13 @@ module GoogleClient
       @client.retries = retries
     end
 
-    def execute(credential, method, parameters = {})
+    def execute(credential, opts = {})
       preflight(credential)
-      @client.execute(
-          authorization: @auth,
-          api_method: method,
-          parameters: parameters,
-      )
+
+      fail 'missing :api_method' unless opts[:api_method].present?
+      opts[:authorization] = @auth
+
+      @client.execute(opts)
     end
 
     def execute_batch(credential, batch)

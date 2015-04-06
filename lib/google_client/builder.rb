@@ -27,6 +27,13 @@ module GoogleClient
       @client.execute(batch, authorization: @auth)
     end
 
+    def freshen_credential!(credential)
+      # TODO: refactor this elsewhere
+      fail TypeError, 'credential must be an instance of Credential (TODO Refactor)' unless credential.is_a? Credential
+      @auth.update_token!(credential.to_auth_hash)
+      fetch_and_update_access_token!(credential)
+    end
+
   private
 
     def preflight(credential)
@@ -46,6 +53,9 @@ module GoogleClient
     end
 
     def fetch_and_update_access_token!(credential)
+      # TODO: refactor this elsewhere
+    fail TypeError, 'credential must be an instance of Credential (TODO Refactor)' unless credential.is_a? Credential
+
       @auth.fetch_access_token!
       credential.update_access_token!(
               token: @auth.access_token,
